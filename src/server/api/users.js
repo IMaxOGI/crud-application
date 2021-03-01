@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-
+const fs = require("fs");
 const userRouter = Router();
 
 let users = [];
