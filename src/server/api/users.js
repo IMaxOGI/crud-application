@@ -19,6 +19,7 @@ userRouter.post("/signup", (req, res) => {
       .send({ success: false, message: "User already exists!" });
   }
   users.push(newUser);
+
   res.send({ success: true });
 });
 
