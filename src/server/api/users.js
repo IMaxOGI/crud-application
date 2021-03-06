@@ -66,10 +66,10 @@ userRouter.post("/signup", (req, res) => {
 userRouter.delete("/:id", (req, res) => {
   readFile((data) => {
     const userId = req.params["id"];
-    data[userId] = req.body;
+    delete data[userId];
 
     writeFile(JSON.stringify(data, null, 2), () => {
-      res.status(200).send(`users id:${userId} update`);
+      res.status(200).send(`users id:${userId} removed`);
     });
   }, true);
 });
@@ -77,10 +77,10 @@ userRouter.delete("/:id", (req, res) => {
 userRouter.put("/:id", (req, res) => {
   readFile((data) => {
     const userId = req.params["id"];
-    delete data[userId];
+    data[userId] = req.body;
 
     writeFile(JSON.stringify(data, null, 2), () => {
-      res.status(200).send(`users id:${userId} removed`);
+      res.status(200).send(`users id:${userId} update`);
     });
   }, true);
 });
