@@ -41,7 +41,6 @@ userRouter.get("/", (req, res) => {
 userRouter.post("/signup", (req, res) => {
   readFile((data) => {
     const newUserId = Date.now().toString();
-
     const prevData = data["users"] || [];
     const body = { id: newUserId, ...req.body };
     const isUserExists = prevData.find((user) => user.email === body.email);
