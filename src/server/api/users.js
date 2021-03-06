@@ -42,7 +42,15 @@ userRouter.post("/signup", (req, res) => {
   readFile((data) => {
     const newUserId = Date.now().toString();
 
-    data[newUserId] = req.body;
+    const prevData = data["users"] || [];
+    const body = { id: newUserId, ...req.body };
+    const isUserExists = prevData.find((user) => user.email === body.email);
+    if (isUserExists) {
+      return res
+        .status(400)
+        .send({ success: false, message: "User already exists!" });
+    }
+    data["users"] = [...prevData, body];
 
     writeFile(JSON.stringify(data, null, 2), () => {
       res.status(200).send("new user added");
@@ -65,9 +73,12 @@ userRouter.post("/signup", (req, res) => {
 userRouter.delete("/:id", (req, res) => {
   readFile((data) => {
     const userId = req.params["id"];
-    delete data[userId];
+    const newArr = data["users"].filter((obj) => {
+      return obj.id !== userId;
+    });
+    const newData = { ...data, data: newArr };
 
-    writeFile(JSON.stringify(data, null, 2), () => {
+    writeFile(JSON.stringify(newData, null, 2), () => {
       res.status(200).send(`users id:${userId} removed`);
     });
   }, true);
@@ -76,9 +87,22 @@ userRouter.delete("/:id", (req, res) => {
 userRouter.put("/:id", (req, res) => {
   readFile((data) => {
     const userId = req.params["id"];
-    data[userId] = req.body;
+    const users = data["users"];
+    const body = req.body;
 
-    writeFile(JSON.stringify(data, null, 2), () => {
+    const updatedArray = users.map((u) => {
+      if (u.id === userId) {
+        return { ...u, ...body };
+      }
+      return u;
+    });
+
+    const newData = {
+      ...data,
+      users: updatedArray,
+    };
+
+    writeFile(JSON.stringify(newData, null, 2), () => {
       res.status(200).send(`users id:${userId} update`);
     });
   }, true);

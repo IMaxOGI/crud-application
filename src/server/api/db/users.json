@@ -1,8 +1,11 @@
 {
-  "1614993213291": {
-    "email": "max45277@gmail.com",
-    "firstName": "Arthur",
-    "lastName": "Oganesyan",
-    "age": 19
-  }
+  "users": [
+    {
+      "id": "1615054131799",
+      "email": "max45277@gmail.com",
+      "firstName": "44",
+      "lastName": "Oganesyan",
+      "age": 19
+    }
+  ]
 }
