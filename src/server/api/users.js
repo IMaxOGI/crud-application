@@ -43,6 +43,7 @@ userRouter.post("/signup", (req, res) => {
     const newUserId = Date.now().toString();
     const prevData = data["users"] || [];
     const body = { id: newUserId, ...req.body };
+    body.email = body.email.toLowerCase();
     const isUserExists = prevData.find((user) => user.email === body.email);
     if (isUserExists) {
       return res
